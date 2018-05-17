@@ -4,7 +4,7 @@ import az.itstep.azjava.testapp.model.Word;
 
 public interface WordService {
 
-    Word save(Word word);
+    Word save(Word word, String token);
 
     String translateFromEn(String en);
 

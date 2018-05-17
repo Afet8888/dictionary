@@ -1,5 +1,6 @@
 package az.itstep.azjava.testapp.service;
 
+import az.itstep.azjava.testapp.model.User;
 import az.itstep.azjava.testapp.model.Word;
 import az.itstep.azjava.testapp.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,16 @@ import java.util.Objects;
 @Service
 public class WordServiceImpl implements WordService {
 
-    WordRepository wordRepository;
+    private WordRepository wordRepository;
+    private UserService userService;
 
     @Override
-    public Word save(Word word) {
+    public Word save(Word word, String token) {
+        User user = userService.findByToken(token);
         if(Objects.isNull(word) || Objects.nonNull(word.getId()))
             throw new RuntimeException();
         if(Objects.isNull(word.getAz()) || Objects.isNull(word.getEn()))
             throw new RuntimeException("Wrong Data");
-
         return wordRepository.save(word);
     }
 
@@ -43,6 +45,10 @@ public class WordServiceImpl implements WordService {
         return wordRepository.findByAz(az)
                 .map(Word::getEn)
                 .orElse(null);
+    }
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @Autowired
