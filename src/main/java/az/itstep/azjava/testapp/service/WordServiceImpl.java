@@ -13,11 +13,9 @@ import java.util.Objects;
 public class WordServiceImpl implements WordService {
 
     private WordRepository wordRepository;
-    private UserService userService;
 
     @Override
-    public Word save(Word word, String token) {
-        User user = userService.findByToken(token);
+    public Word save(Word word) {
         if(Objects.isNull(word) || Objects.nonNull(word.getId()))
             throw new RuntimeException();
         if(Objects.isNull(word.getAz()) || Objects.isNull(word.getEn()))
@@ -45,10 +43,6 @@ public class WordServiceImpl implements WordService {
         return wordRepository.findByAz(az)
                 .map(Word::getEn)
                 .orElse(null);
-    }
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
     }
 
     @Autowired

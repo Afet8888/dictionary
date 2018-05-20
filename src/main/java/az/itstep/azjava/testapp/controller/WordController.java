@@ -20,9 +20,13 @@ public class WordController {
 
     @PostMapping
     Word save(@RequestBody Word word, @RequestHeader HttpHeaders headers) {
-        User user = userService.findByToken(headers.get("token").get(0));
-        if(Objects.isNull(user))
+        try {
+            User user = userService.findByToken(headers.get("token").get(0));
+            if(Objects.isNull(user))
+                return null;
+        } catch (NullPointerException ex) {
             return null;
+        }
         return wordService.save(word);
     }
 
