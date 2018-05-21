@@ -21,6 +21,12 @@ public class TranslateController {
         return wordService.translateFromAz(word);
     }
 
+
+    @ExceptionHandler (RuntimeException.class)
+    String handleTranslate(RuntimeException e) {
+        return e.getMessage();
+    }
+
     @Autowired
     public void setWordService(WordService wordService) {
         this.wordService = wordService;

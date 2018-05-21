@@ -20,16 +20,19 @@ public class WordController {
 
     @PostMapping
     Word save(@RequestBody Word word, @RequestHeader HttpHeaders headers) {
-        User user = userService.findByToken(headers.get("token").get(0));
-        if(Objects.isNull(user))
-            return null;
-        return wordService.save(word);
+        return wordService.save(word, headers.get("token").get(0));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    String handle(RuntimeException e){
+        return e.getMessage();
     }
 
     @Autowired
     public void setWordService(WordService wordService) {
         this.wordService = wordService;
     }
+
 
     @Autowired
     public void setUserService(UserService userService) {
